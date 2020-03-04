@@ -26,7 +26,7 @@ func TestAssertionUnmarshaledFromYAML(t *testing.T) {
 - isAPIVersion:
 - hasDocuments:
 `
-	assertionsAsMap := make([]map[string]interface{}, 13)
+	assertionsAsMap := make([]map[interface{}]interface{}, 13)
 	yaml.Unmarshal([]byte(assertionsYAML), &assertionsAsMap)
 	assertions := make([]Assertion, 13)
 	yaml.Unmarshal([]byte(assertionsYAML), &assertions)

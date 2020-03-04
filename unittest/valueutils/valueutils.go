@@ -45,13 +45,14 @@ type fetchTraverser struct {
 }
 
 func (tr *fetchTraverser) traverseMapKey(key string) error {
-	if d, ok := tr.data.(map[string]interface{}); ok {
+	if d, ok := tr.data.(map[interface{}]interface{}); ok {
 		tr.data = d[key]
 		return nil
 	} else if d, ok := tr.data.(common.K8sManifest); ok {
 		tr.data = d[key]
 		return nil
 	}
+
 	return fmt.Errorf(
 		"can't get [\"%s\"] from a non map type:\n%s",
 		key, common.TrustedMarshalYAML(tr.data),
@@ -66,6 +67,7 @@ func (tr *fetchTraverser) traverseListIdx(idx int) error {
 		tr.data = d[idx]
 		return nil
 	}
+
 	return fmt.Errorf(
 		"can't get [%d] from a non array type:\n%s",
 		idx, common.TrustedMarshalYAML(tr.data),

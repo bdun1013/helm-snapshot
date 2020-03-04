@@ -70,7 +70,7 @@ func TestEqualValidatorWhenFail(t *testing.T) {
 func TestEqualValidatorWhenNegativeAndFail(t *testing.T) {
 	manifest := makeManifest(docToTestEqual)
 
-	v := EqualValidator{"a.b[0]", map[string]interface{}{"c": 123}}
+	v := EqualValidator{"a.b[0]", map[interface{}]interface{}{"c": 123}}
 	pass, diff := v.Validate(&ValidateContext{
 		Docs:     []common.K8sManifest{manifest},
 		Negative: true,

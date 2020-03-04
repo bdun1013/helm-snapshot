@@ -56,7 +56,7 @@ func (a *Assertion) noFileErrMessage() string {
 
 // UnmarshalYAML implement yaml.Unmalshaler, construct validator according to the assert type
 func (a *Assertion) UnmarshalYAML(unmarshal func(interface{}) error) error {
-	assertDef := make(map[string]interface{})
+	assertDef := make(map[interface{}]interface{})
 	if err := unmarshal(&assertDef); err != nil {
 		return err
 	}
@@ -87,7 +87,7 @@ func (a *Assertion) UnmarshalYAML(unmarshal func(interface{}) error) error {
 	return nil
 }
 
-func (a *Assertion) constructValidator(assertDef map[string]interface{}) error {
+func (a *Assertion) constructValidator(assertDef map[interface{}]interface{}) error {
 	for assertName, correspondDef := range assertTypeMapping {
 		if params, ok := assertDef[assertName]; ok {
 			if a.validator != nil {

@@ -21,7 +21,7 @@ func TestContainsValidatorWhenOk(t *testing.T) {
 
 	validator := ContainsValidator{
 		"a.b",
-		map[string]interface{}{"d": "foo bar"},
+		map[interface{}]interface{}{"d": "foo bar"},
 	}
 	pass, diff := validator.Validate(&ValidateContext{
 		Docs: []common.K8sManifest{manifest},
@@ -71,7 +71,7 @@ func TestContainsValidatorWhenNegativeAndFail(t *testing.T) {
 
 	validator := ContainsValidator{
 		"a.b",
-		map[string]interface{}{"d": "foo bar"},
+		map[interface{}]interface{}{"d": "foo bar"},
 	}
 	pass, diff := validator.Validate(&ValidateContext{
 		Docs:     []common.K8sManifest{manifest},
