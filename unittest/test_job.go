@@ -31,19 +31,12 @@ func (s *orderedSnapshotComparer) CompareToSnapshot(content interface{}) *snapsh
 
 // TestJob definition of a test, including values and assertions
 type TestJob struct {
-	Name       string `yaml:"it"`
-	Values     []string
-	Set        map[string]interface{}
-	Assertions []*Assertion `yaml:"asserts"`
-	Release    struct {
-		Name      string
-		Namespace string
-		Revision  int
-		IsUpgrade bool
-	}
-	Capabilities struct {
-		APIVersions []string
-	}
+	Name         string `yaml:"it"`
+	Values       []string
+	Set          map[string]interface{}
+	Assertions   []*Assertion `yaml:"asserts"`
+	Release      chartutil.ReleaseOptions
+	Capabilities chartutil.Capabilities
 	// route indicate which chart in the dependency hierarchy
 	// like "parant-chart", "parent-charts/charts/child-chart"
 	chartRoute string
@@ -164,13 +157,7 @@ func (t *TestJob) releaseOption() *chartutil.ReleaseOptions {
 // get chartutil.CapabilityOptions ready for render
 // Only supports APIVersions for now
 func (t *TestJob) capabilityOption() *chartutil.Capabilities {
-	options := chartutil.Capabilities{APIVersions: chartutil.DefaultVersionSet}
-	if len(t.Capabilities.APIVersions) > 0 {
-		var arr []string
-		arr = append(t.Capabilities.APIVersions, "v1")
-		options.APIVersions = chartutil.VersionSet(arr)
-	}
-	return &options
+	return chartutil.DefaultCapabilities
 }
 
 // parse rendered manifest if it's yaml
