@@ -1,9 +1,7 @@
 package unittest
 
 import (
-	"fmt"
 	"io"
-	"io/ioutil"
 	"path"
 	"path/filepath"
 	"strings"
@@ -11,11 +9,13 @@ import (
 	"github.com/bpdunni/helm-unittest/unittest/common"
 	"github.com/bpdunni/helm-unittest/unittest/snapshot"
 	"github.com/bpdunni/helm-unittest/unittest/validators"
-	"github.com/bpdunni/helm-unittest/unittest/valueutils"
 	yaml "gopkg.in/yaml.v2"
 	"helm.sh/helm/v3/pkg/chart"
 	"helm.sh/helm/v3/pkg/chartutil"
+	"helm.sh/helm/v3/pkg/cli"
+	"helm.sh/helm/v3/pkg/cli/values"
 	"helm.sh/helm/v3/pkg/engine"
+	"helm.sh/helm/v3/pkg/getter"
 )
 
 type orderedSnapshotComparer struct {
@@ -83,12 +83,13 @@ func (t *TestJob) Run(
 }
 
 // liberally borrows from helm-template
-func (t *TestJob) getUserValues() (map[string]interface{}, error) {
-	base := map[string]interface{}{}
-	routes := spliteChartRoutes(t.chartRoute)
+func (t *TestJob) getUserValues() (*values.Options, error) {
+
+	valueOpts := &values.Options{
+		ValueFiles: make([]string, 0),
+	}
 
 	for _, specifiedPath := range t.Values {
-		value := map[string]interface{}{}
 		var valueFilePath string
 		if path.IsAbs(specifiedPath) {
 			valueFilePath = specifiedPath
@@ -96,39 +97,32 @@ func (t *TestJob) getUserValues() (map[string]interface{}, error) {
 			valueFilePath = filepath.Join(filepath.Dir(t.definitionFile), specifiedPath)
 		}
 
-		bytes, err := ioutil.ReadFile(valueFilePath)
-		if err != nil {
-			return map[string]interface{}{}, err
-		}
-
-		if err := yaml.Unmarshal(bytes, &value); err != nil {
-			return map[string]interface{}{}, fmt.Errorf("failed to parse %s: %s", specifiedPath, err)
-		}
-		base = valueutils.MergeValues(base, scopeValuesWithRoutes(routes, value))
+		valueOpts.ValueFiles = append(valueOpts.ValueFiles, valueFilePath)
 	}
 
-	for path, values := range t.Set {
-		setMap, err := valueutils.BuildValueOfSetPath(values, path)
-		if err != nil {
-			return map[string]interface{}{}, err
-		}
-
-		base = valueutils.MergeValues(base, scopeValuesWithRoutes(routes, setMap))
-	}
-	return base, nil
+	return valueOpts, nil
 }
 
 // render the chart and return result map
-func (t *TestJob) renderChart(targetChart *chart.Chart, userValues map[string]interface{}) (map[string]string, error) {
+func (t *TestJob) renderChart(targetChart *chart.Chart, userValues *values.Options) (map[string]string, error) {
 	options := *t.releaseOption()
 	caps := *t.capabilityOption()
 
-	vals, err := chartutil.ToRenderValues(targetChart, userValues, options, &caps)
+	settings := cli.New()
+
+	p := getter.All(settings)
+	vals, err := userValues.MergeValues(p)
+
+	if err := chartutil.ProcessDependencies(targetChart, vals); err != nil {
+		return nil, err
+	}
+
+	renderedVals, err := chartutil.ToRenderValues(targetChart, vals, options, &caps)
 	if err != nil {
 		return nil, err
 	}
 
-	outputOfFiles, err := engine.Render(targetChart, vals)
+	outputOfFiles, err := engine.Render(targetChart, renderedVals)
 	if err != nil {
 		return nil, err
 	}
