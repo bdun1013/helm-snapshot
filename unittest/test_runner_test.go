@@ -2,6 +2,7 @@ package unittest_test
 
 import (
 	"bytes"
+	"fmt"
 	"regexp"
 	"sort"
 	"strings"
@@ -64,6 +65,7 @@ func TestRunnerOkWithPassedTests(t *testing.T) {
 		},
 	}
 	passed := runner.Run([]string{"../__fixtures__/basic"})
+	fmt.Println(buffer.String())
 	assert.True(t, passed)
 	cupaloy.SnapshotT(t, makeOutputSnapshotable(buffer.String())...)
 }
@@ -91,6 +93,7 @@ func TestRunnerWithTestsInSubchart(t *testing.T) {
 		},
 	}
 	passed := runner.Run([]string{"../__fixtures__/with-subchart"})
+	fmt.Println(buffer.String())
 	assert.True(t, passed)
 	cupaloy.SnapshotT(t, makeOutputSnapshotable(buffer.String())...)
 }
@@ -105,6 +108,7 @@ func TestRunnerWithTestsInSubchartButFlagFalse(t *testing.T) {
 		},
 	}
 	passed := runner.Run([]string{"../__fixtures__/with-subchart"})
+	fmt.Println(buffer.String())
 	assert.True(t, passed)
 	cupaloy.SnapshotT(t, makeOutputSnapshotable(buffer.String())...)
 }
