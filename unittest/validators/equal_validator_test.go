@@ -3,9 +3,9 @@ package validators_test
 import (
 	"testing"
 
-	. "github.com/lrills/helm-unittest/unittest/validators"
+	. "github.com/bpdunni/helm-unittest/unittest/validators"
 
-	"github.com/lrills/helm-unittest/unittest/common"
+	"github.com/bpdunni/helm-unittest/unittest/common"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -45,7 +45,7 @@ func TestEqualValidatorWhenFail(t *testing.T) {
 
 	validator := EqualValidator{
 		"a.b[0]",
-		map[interface{}]interface{}{"d": 321},
+		map[string]interface{}{"d": 321},
 	}
 	pass, diff := validator.Validate(&ValidateContext{
 		Docs: []common.K8sManifest{manifest},
@@ -70,7 +70,7 @@ func TestEqualValidatorWhenFail(t *testing.T) {
 func TestEqualValidatorWhenNegativeAndFail(t *testing.T) {
 	manifest := makeManifest(docToTestEqual)
 
-	v := EqualValidator{"a.b[0]", map[interface{}]interface{}{"c": 123}}
+	v := EqualValidator{"a.b[0]", map[string]interface{}{"c": 123}}
 	pass, diff := v.Validate(&ValidateContext{
 		Docs:     []common.K8sManifest{manifest},
 		Negative: true,

@@ -8,15 +8,14 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/lrills/helm-unittest/unittest/common"
-	"github.com/lrills/helm-unittest/unittest/snapshot"
-	"github.com/lrills/helm-unittest/unittest/validators"
-	"github.com/lrills/helm-unittest/unittest/valueutils"
+	"github.com/bpdunni/helm-unittest/unittest/common"
+	"github.com/bpdunni/helm-unittest/unittest/snapshot"
+	"github.com/bpdunni/helm-unittest/unittest/validators"
+	"github.com/bpdunni/helm-unittest/unittest/valueutils"
 	yaml "gopkg.in/yaml.v2"
-	"k8s.io/helm/pkg/chartutil"
-	"k8s.io/helm/pkg/engine"
-	"k8s.io/helm/pkg/proto/hapi/chart"
-	"k8s.io/helm/pkg/timeconv"
+	"helm.sh/helm/v3/pkg/chart"
+	"helm.sh/helm/v3/pkg/chartutil"
+	"helm.sh/helm/v3/pkg/engine"
 )
 
 type orderedSnapshotComparer struct {
@@ -91,12 +90,12 @@ func (t *TestJob) Run(
 }
 
 // liberally borrows from helm-template
-func (t *TestJob) getUserValues() ([]byte, error) {
-	base := map[interface{}]interface{}{}
+func (t *TestJob) getUserValues() (map[string]interface{}, error) {
+	base := map[string]interface{}{}
 	routes := spliteChartRoutes(t.chartRoute)
 
 	for _, specifiedPath := range t.Values {
-		value := map[interface{}]interface{}{}
+		value := map[string]interface{}{}
 		var valueFilePath string
 		if path.IsAbs(specifiedPath) {
 			valueFilePath = specifiedPath
@@ -106,11 +105,11 @@ func (t *TestJob) getUserValues() ([]byte, error) {
 
 		bytes, err := ioutil.ReadFile(valueFilePath)
 		if err != nil {
-			return []byte{}, err
+			return map[string]interface{}{}, err
 		}
 
 		if err := yaml.Unmarshal(bytes, &value); err != nil {
-			return []byte{}, fmt.Errorf("failed to parse %s: %s", specifiedPath, err)
+			return map[string]interface{}{}, fmt.Errorf("failed to parse %s: %s", specifiedPath, err)
 		}
 		base = valueutils.MergeValues(base, scopeValuesWithRoutes(routes, value))
 	}
@@ -118,27 +117,25 @@ func (t *TestJob) getUserValues() ([]byte, error) {
 	for path, values := range t.Set {
 		setMap, err := valueutils.BuildValueOfSetPath(values, path)
 		if err != nil {
-			return []byte{}, err
+			return map[string]interface{}{}, err
 		}
 
 		base = valueutils.MergeValues(base, scopeValuesWithRoutes(routes, setMap))
 	}
-	return yaml.Marshal(base)
+	return base, nil
 }
 
 // render the chart and return result map
-func (t *TestJob) renderChart(targetChart *chart.Chart, userValues []byte) (map[string]string, error) {
-	config := &chart.Config{Raw: string(userValues), Values: map[string]*chart.Value{}}
+func (t *TestJob) renderChart(targetChart *chart.Chart, userValues map[string]interface{}) (map[string]string, error) {
 	options := *t.releaseOption()
 	caps := *t.capabilityOption()
 
-	vals, err := chartutil.ToRenderValuesCaps(targetChart, config, options, &caps)
+	vals, err := chartutil.ToRenderValues(targetChart, userValues, options, &caps)
 	if err != nil {
 		return nil, err
 	}
 
-	renderer := engine.New()
-	outputOfFiles, err := renderer.Render(targetChart, vals)
+	outputOfFiles, err := engine.Render(targetChart, vals)
 	if err != nil {
 		return nil, err
 	}
@@ -151,7 +148,6 @@ func (t *TestJob) releaseOption() *chartutil.ReleaseOptions {
 	options := chartutil.ReleaseOptions{
 		Name:      "RELEASE-NAME",
 		Namespace: "NAMESPACE",
-		Time:      timeconv.Now(),
 		Revision:  t.Release.Revision,
 		IsInstall: !t.Release.IsUpgrade,
 		IsUpgrade: t.Release.IsUpgrade,
@@ -172,7 +168,7 @@ func (t *TestJob) capabilityOption() *chartutil.Capabilities {
 	if len(t.Capabilities.APIVersions) > 0 {
 		var arr []string
 		arr = append(t.Capabilities.APIVersions, "v1")
-		options.APIVersions = chartutil.NewVersionSet(arr...)
+		options.APIVersions = chartutil.VersionSet(arr)
 	}
 	return &options
 }

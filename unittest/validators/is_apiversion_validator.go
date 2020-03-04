@@ -1,6 +1,6 @@
 package validators
 
-import "github.com/lrills/helm-unittest/unittest/common"
+import "github.com/bpdunni/helm-unittest/unittest/common"
 
 // IsAPIVersionValidator validate apiVersion of manifest is Of
 type IsAPIVersionValidator struct {

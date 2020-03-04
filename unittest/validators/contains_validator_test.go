@@ -3,9 +3,9 @@ package validators_test
 import (
 	"testing"
 
-	. "github.com/lrills/helm-unittest/unittest/validators"
+	. "github.com/bpdunni/helm-unittest/unittest/validators"
 
-	"github.com/lrills/helm-unittest/unittest/common"
+	"github.com/bpdunni/helm-unittest/unittest/common"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -21,7 +21,7 @@ func TestContainsValidatorWhenOk(t *testing.T) {
 
 	validator := ContainsValidator{
 		"a.b",
-		map[interface{}]interface{}{"d": "foo bar"},
+		map[string]interface{}{"d": "foo bar"},
 	}
 	pass, diff := validator.Validate(&ValidateContext{
 		Docs: []common.K8sManifest{manifest},
@@ -34,7 +34,7 @@ func TestContainsValidatorWhenOk(t *testing.T) {
 func TestContainsValidatorWhenNegativeAndOk(t *testing.T) {
 	manifest := makeManifest(docToTestContains)
 
-	validator := ContainsValidator{"a.b", map[interface{}]interface{}{"d": "hello bar"}}
+	validator := ContainsValidator{"a.b", map[string]interface{}{"d": "hello bar"}}
 	pass, diff := validator.Validate(&ValidateContext{
 		Docs:     []common.K8sManifest{manifest},
 		Negative: true,
@@ -49,7 +49,7 @@ func TestContainsValidatorWhenFail(t *testing.T) {
 
 	validator := ContainsValidator{
 		"a.b",
-		map[interface{}]interface{}{"e": "bar bar"},
+		map[string]interface{}{"e": "bar bar"},
 	}
 	pass, diff := validator.Validate(&ValidateContext{
 		Docs: []common.K8sManifest{manifest},
@@ -71,7 +71,7 @@ func TestContainsValidatorWhenNegativeAndFail(t *testing.T) {
 
 	validator := ContainsValidator{
 		"a.b",
-		map[interface{}]interface{}{"d": "foo bar"},
+		map[string]interface{}{"d": "foo bar"},
 	}
 	pass, diff := validator.Validate(&ValidateContext{
 		Docs:     []common.K8sManifest{manifest},

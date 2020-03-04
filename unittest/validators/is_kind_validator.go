@@ -1,6 +1,6 @@
 package validators
 
-import "github.com/lrills/helm-unittest/unittest/common"
+import "github.com/bpdunni/helm-unittest/unittest/common"
 
 // IsKindValidator validate kind of manifest is Of
 type IsKindValidator struct {
