@@ -82,7 +82,7 @@ func init() {
 		"enforce printing colored output even stdout is not a tty. Set to false to disable color",
 	)
 
-	defaultFilePattern := filepath.Join("tests", "*_test.yaml")
+	defaultFilePattern := filepath.Join("templates/tests/unit", "*_test.yaml")
 	cmd.PersistentFlags().StringArrayVarP(
 		&testConfig.TestFiles, "file", "f", []string{defaultFilePattern},
 		"glob paths of test files location, default to "+defaultFilePattern,
