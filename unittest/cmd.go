@@ -2,8 +2,10 @@ package unittest
 
 import (
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
+	"runtime"
 
 	"github.com/spf13/cobra"
 )
@@ -69,11 +71,25 @@ details about how to write tests.
 }
 
 // Execute execute unittest command
-func Execute() {
+func Execute(version string) {
+	cmd.AddCommand(newVersionCommand(os.Stdout, version))
 	if err := cmd.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
+}
+
+func newVersionCommand(out io.Writer, version string) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "version",
+		Short: "Prints the version number of helm unittest",
+		Long:  "Prints the version number of helm unittest",
+		Run: func(cmd *cobra.Command, args []string) {
+			fmt.Fprintln(out, "helm unittest plugin version", version, "built with go version", runtime.Version())
+		},
+	}
+
+	return cmd
 }
 
 func init() {

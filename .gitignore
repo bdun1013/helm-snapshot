@@ -3,8 +3,8 @@ tpl
 vendor/
 _dist/
 
-untt
-untt.exe
+unittest
+unittest.exe
 _dist
 
 .DS_Store

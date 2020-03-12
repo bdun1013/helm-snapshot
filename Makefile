@@ -1,44 +1,57 @@
-
-# borrowed from https://github.com/technosophos/helm-template
-
-HELM_HOME ?= $(shell helm home)
-HELM_PLUGIN_DIR ?= $(HELM_HOME)/plugins/helm-unittest
-HAS_DEP := $(shell command -v dep;)
-VERSION := $(shell sed -n -e 's/version:[ "]*\([^"]*\).*/\1/p' plugin.yaml)
-DIST := $(CURDIR)/_dist
-LDFLAGS := "-X main.version=${VERSION} -extldflags '-static'"
-DOCKER ?= "irills/helm-unittest"
-
-.PHONY: install
-install: bootstrap build
-	cp untt $(HELM_PLUGIN_DIR)
-	cp plugin.yaml $(HELM_PLUGIN_DIR)
-
-.PHONY: hookInstall
-hookInstall: bootstrap build
+PLUGIN_NAME := unittest
 
 .PHONY: build
-build:
-	go build -o untt -ldflags $(LDFLAGS) ./main.go
+build: build_linux build_mac build_windows
 
-.PHONY: dist
-dist:
-	mkdir -p $(DIST)
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o untt -ldflags $(LDFLAGS) ./main.go
-	tar -zcvf $(DIST)/helm-unittest-linux-amd64.tgz untt README.md LICENSE plugin.yaml
-	CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -o untt -ldflags $(LDFLAGS) ./main.go
-	tar -zcvf $(DIST)/helm-unittest-macos-amd64.tgz untt README.md LICENSE plugin.yaml
-	CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -o untt.exe -ldflags $(LDFLAGS) ./main.go
-	tar -zcvf $(DIST)/helm-unittest-windows-amd64.tgz untt.exe README.md LICENSE plugin.yaml
-	CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -o untt -ldflags $(LDFLAGS) ./main.go
-	tar -zcvf $(DIST)/helm-unittest-linux-arm64.tgz untt README.md LICENSE plugin.yaml
+build_windows: export GOARCH=amd64
+build_windows: export GO111MODULE=on
+build_windows: export GOPROXY=https://goproxy.io
+build_windows:
+	@GOOS=windows go build -v --ldflags="-w -X main.version=$(VERSION)" \
+		-o bin/windows/amd64/unittest main.go  # windows
 
-.PHONY: bootstrap
-bootstrap:
-ifndef HAS_DEP
-	curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-endif
-	dep ensure
+link_windows:
+	@cp bin/windows/amd64/unittest ./bin/unittest
 
-dockerimage:
-	docker build -t $(DOCKER):$(VERSION) .
+build_linux: export GOARCH=amd64
+build_linux: export CGO_ENABLED=0
+build_linux: export GO111MODULE=on
+build_linux: export GOPROXY=https://goproxy.io
+build_linux:
+	@GOOS=linux go build -v --ldflags="-w -X main.version=$(VERSION)" \
+		-o bin/linux/amd64/unittest main.go  # linux
+
+link_linux:
+	@cp bin/linux/amd64/unittest ./bin/unittest
+
+build_mac: export GOARCH=amd64
+build_mac: export CGO_ENABLED=0
+build_mac: export GO111MODULE=on
+build_mac: export GOPROXY=https://goproxy.io
+build_mac:
+	@GOOS=darwin go build -v --ldflags="-w -X main.version=$(VERSION)" \
+		-o bin/darwin/amd64/unittest main.go # mac osx
+	@cp bin/darwin/amd64/unittest ./bin/unittest # For use w make install
+
+link_mac:
+	@cp bin/darwin/amd64/unittest ./bin/unittest
+
+.PHONY: clean
+clean:
+	@git status --ignored --short | grep '^!! ' | sed 's/!! //' | xargs rm -rf
+
+.PHONY: covhtml
+covhtml:
+	@go tool cover -html=.cover/cover.out
+
+.PHONY: tree
+tree:
+	@tree -I vendor
+
+.PHONY: install
+install:
+	HELM_PUSH_PLUGIN_NO_INSTALL_HOOK=1 helm plugin install $(shell pwd)
+
+.PHONY: remove
+remove:
+	helm plugin remove $(PLUGIN_NAME)

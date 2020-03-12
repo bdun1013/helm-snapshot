@@ -14,9 +14,9 @@ jobs:
             ./install-dep.sh
       - restore_cache:
           keys:
-            - helm-untt-deps-{{ .Branch }}-{{ checksum "Gopkg.lock" }}
-            - helm-untt-deps-{{ .Branch }}-
-            - helm-untt-deps-
+            - helm-unittest-deps-{{ .Branch }}-{{ checksum "Gopkg.lock" }}
+            - helm-unittest-deps-{{ .Branch }}-
+            - helm-unittest-deps-
       - run:
           name: Check dep status
           command: dep status -v
@@ -24,7 +24,7 @@ jobs:
           name: Ensure dep
           command: dep ensure -vendor-only -v
       - save_cache:
-          key: helm-untt-deps-{{ .Branch }}-{{ checksum "Gopkg.lock" }}
+          key: helm-unittest-deps-{{ .Branch }}-{{ checksum "Gopkg.lock" }}
           paths:
             - /go/src/github.com/lrills/helm-unittest/vendor
       - run:
@@ -42,9 +42,9 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - helm-untt-deps-{{ .Branch }}-{{ checksum "Gopkg.lock" }}
-            - helm-untt-deps-{{ .Branch }}-
-            - helm-untt-deps-
+            - helm-unittest-deps-{{ .Branch }}-{{ checksum "Gopkg.lock" }}
+            - helm-unittest-deps-{{ .Branch }}-
+            - helm-unittest-deps-
       - run:
           name: Insatll ghr
           command: go get -u github.com/tcnksm/ghr
