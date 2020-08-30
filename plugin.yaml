@@ -1,9 +1,9 @@
-name: "unittest"
+name: "snapshot"
 version: "v0.3.0"
-usage: "unittest for helm charts"
+usage: "snapshot for helm charts"
 description: "Unit test for helm chart in YAML with ease to keep your chart functional and robust."
 ignoreFlags: false
-command: "$HELM_PLUGIN_DIR/unittest"
+command: "$HELM_PLUGIN_DIR/snapshot"
 hooks:
   install: "$HELM_PLUGIN_DIR/install-binary.sh"
   update: "$HELM_PLUGIN_DIR/install-binary.sh"

@@ -1,4 +1,4 @@
-# helm unittest
+# helm snapshot
 
 Unit test for *helm chart* in YAML to keep your chart consistent and robust!
 
@@ -27,7 +27,7 @@ If you are ready for writing tests, check the [DOCUMENT](./DOCUMENT.md) for the 
 ## Install
 
 ```
-$ helm plugin install https://github.com/bpdunni/helm-unittest
+$ helm plugin install https://github.com/bpdunni/helm-snapshot
 ```
 
 It will install the latest version of binary into helm plugin directory.
@@ -57,7 +57,7 @@ tests:
 and run:
 
 ```
-$ helm unittest $YOUR_CHART
+$ helm snapshot $YOUR_CHART
 ```
 
 Now there is your first test! ;)  
@@ -67,14 +67,14 @@ Now there is your first test! ;)
 The test suite file is written in pure YAML, and default placed under the `tests/` directory of the chart with suffix `_test.yaml`. You can also have your own suite files arrangement with `-f, --file` option of cli set as the glob patterns of test suite files related to chart directory, like:
 
 ```bash
-$ helm unittest -f 'my-tests/*.yaml' -f 'more-tests/*.yaml' my-chart
+$ helm snapshot -f 'my-tests/*.yaml' -f 'more-tests/*.yaml' my-chart
 ```
 Check [DOCUMENT](./DOCUMENT.md) for more details about writing tests.
 
 ## Usage
 
 ```
-$ helm unittest [flags] CHART [...]
+$ helm snapshot [flags] CHART [...]
 ```
 
 This renders your charts locally (without tiller) and runs tests
@@ -85,7 +85,7 @@ defined in test suite files.
 ```
 --color              enforce printing colored output even stdout is not a tty. Set to false to disable color
 -f, --file stringArray   glob paths of test files location, default to tests/*_test.yaml (default [tests/*_test.yaml])
--h, --help               help for unittest
+-h, --help               help for snapshot
 -u, --update-snapshot    update the snapshot cached if needed, make sure you review the change before update
 ```
 
@@ -114,7 +114,7 @@ tests:
 The `matchSnapshot` assertion validate the content rendered the same as cached last time. It fails if the content changed, and you should check and update the cache with `-u, --update-snapshot` option of cli.
 
 ```
-$ helm unittest -u my-chart
+$ helm snapshot -u my-chart
 ```
 The cache files is stored as `__snapshot__/*_test.yaml.snap` at the directory your test file placed, you should add them in version control with your chart.
 
@@ -159,8 +159,8 @@ Issues and PRs are welcome!
 Before start developing this plugin, you must have [go](https://golang.org/doc/install) and [dep](https://github.com/golang/dep#installation) installed, and run:
 
 ```
-git clone git@github.com:lrills/helm-unittest.git
-cd helm-unittest
+git clone git@github.com:lrills/helm-snapshot.git
+cd helm-snapshot
 dep ensure
 ```
 
@@ -168,12 +168,12 @@ And please make CI passed when request a PR which would check following things:
 
 - `dep status` passed. Make sure you run `dep ensure` if new dependencies added.
 - `gofmt` no changes needed. Please run `gofmt -w -s` before you commit.
-- `go test ./unittest/...` passed.
+- `go test ./snapshot/...` passed.
 
 In some cases you might need to manually fix the tests in `*_test.go`. If the snapshot tests (of the plugin's test code) failed you need to run:
 
 ```
-UPDATE_SNAPSHOTS=true go test ./unittest/...
+UPDATE_SNAPSHOTS=true go test ./snapshot/...
 ```
 
 This update the snapshot cache file and please add them before you commit.

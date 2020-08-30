@@ -1,4 +1,4 @@
-PLUGIN_NAME := unittest
+PLUGIN_NAME := snapshot
 
 .PHONY: build
 build: build_linux build_mac build_windows
@@ -8,10 +8,10 @@ build_windows: export GO111MODULE=on
 build_windows: export GOPROXY=https://goproxy.io
 build_windows:
 	@GOOS=windows go build -v --ldflags="-w -X main.version=$(VERSION)" \
-		-o bin/windows/amd64/unittest main.go  # windows
+		-o bin/windows/amd64/snapshot main.go  # windows
 
 link_windows:
-	@cp bin/windows/amd64/unittest ./bin/unittest
+	@cp bin/windows/amd64/snapshot ./bin/snapshot
 
 build_linux: export GOARCH=amd64
 build_linux: export CGO_ENABLED=0
@@ -19,10 +19,10 @@ build_linux: export GO111MODULE=on
 build_linux: export GOPROXY=https://goproxy.io
 build_linux:
 	@GOOS=linux go build -v --ldflags="-w -X main.version=$(VERSION)" \
-		-o bin/linux/amd64/unittest main.go  # linux
+		-o bin/linux/amd64/snapshot main.go  # linux
 
 link_linux:
-	@cp bin/linux/amd64/unittest ./bin/unittest
+	@cp bin/linux/amd64/snapshot ./bin/snapshot
 
 build_mac: export GOARCH=amd64
 build_mac: export CGO_ENABLED=0
@@ -30,11 +30,11 @@ build_mac: export GO111MODULE=on
 build_mac: export GOPROXY=https://goproxy.io
 build_mac:
 	@GOOS=darwin go build -v --ldflags="-w -X main.version=$(VERSION)" \
-		-o bin/darwin/amd64/unittest main.go # mac osx
-	@cp bin/darwin/amd64/unittest ./bin/unittest # For use w make install
+		-o bin/darwin/amd64/snapshot main.go # mac osx
+	@cp bin/darwin/amd64/snapshot ./bin/snapshot # For use w make install
 
 link_mac:
-	@cp bin/darwin/amd64/unittest ./bin/unittest
+	@cp bin/darwin/amd64/snapshot ./bin/snapshot
 
 .PHONY: clean
 clean:

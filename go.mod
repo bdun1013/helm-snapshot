@@ -1,4 +1,4 @@
-module github.com/bpdunni/helm-unittest
+module github.com/bpdunni/helm-snapshot
 
 go 1.15
 

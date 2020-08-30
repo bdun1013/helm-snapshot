@@ -8,15 +8,15 @@ if [ -n "${HELM_PUSH_PLUGIN_NO_INSTALL_HOOK}" ]; then
 fi
 
 version="$(cat plugin.yaml | grep "version" | cut -d '"' -f 2)"
-echo "Downloading and installing helm-umbrella v${version} ..."
+echo "Downloading and installing helm-snapshot v${version} ..."
 
 url=""
 if [ "$(uname)" = "Darwin" ]; then
-    url="https://github.com/bpdunni/helm-umbrella/releases/download/v${version}/helm-umbrella_v${version}_darwin_amd64.tar.gz"
+    url="https://github.com/bpdunni/helm-snapshot/releases/download/v${version}/helm-snapshot_${version}_darwin_amd64.tar.gz"
 elif [ "$(uname)" = "Linux" ] ; then
-    url="https://github.com/bpdunni/helm-umbrella/releases/download/v${version}/helm-umbrella_v${version}_linux_amd64.tar.gz"
+    url="https://github.com/bpdunni/helm-snapshot/releases/download/v${version}/helm-snapshot_${version}_linux_amd64.tar.gz"
 else
-    url="https://github.com/bpdunni/helm-umbrella/releases/download/v${version}/helm-umbrella_$v{version}_windows_amd64.tar.gz"
+    url="https://github.com/bpdunni/helm-snapshot/releases/download/v${version}/helm-snapshot_${version}_windows_amd64.tar.gz"
 fi
 
 echo $url
@@ -31,5 +31,5 @@ else
     wget -q "${url}" -O "releases/v${version}.tar.gz"
 fi
 tar xzf "releases/v${version}.tar.gz" -C "releases/v${version}"
-mv "releases/v${version}/umbrella" "bin/umbrella" || \
-    mv "releases/v${version}/umbrella.exe" "bin/umbrella"
+mv "releases/v${version}/snapshot" "bin/snapshot" || \
+    mv "releases/v${version}/snapshot.exe" "bin/snapshot"

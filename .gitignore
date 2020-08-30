@@ -1,11 +1,1 @@
-_scratch
-tpl
-vendor/
-_dist/
-
-unittest
-unittest.exe
-_dist
-
-.DS_Store
-.idea
+bin/
