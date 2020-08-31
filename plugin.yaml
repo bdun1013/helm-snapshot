@@ -5,5 +5,5 @@ description: "Unit test for helm chart in YAML with ease to keep your chart func
 ignoreFlags: false
 command: "$HELM_PLUGIN_DIR/snapshot"
 hooks:
-  install: "$HELM_PLUGIN_DIR/install-binary.sh"
-  update: "$HELM_PLUGIN_DIR/install-binary.sh"
+  install: "$HELM_PLUGIN_DIR/scripts/install-binary.sh"
+  update: "$HELM_PLUGIN_DIR/scripts/install-binary.sh"
