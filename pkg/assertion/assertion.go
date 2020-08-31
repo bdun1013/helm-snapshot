@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/bpdunni/helm-snapshot/pkg/common"
-	"github.com/bpdunni/helm-snapshot/pkg/validators"
+	"github.com/bdun1013/helm-snapshot/pkg/common"
+	"github.com/bdun1013/helm-snapshot/pkg/validators"
 
 	"github.com/mitchellh/mapstructure"
 )

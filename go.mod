@@ -1,4 +1,4 @@
-module github.com/bpdunni/helm-snapshot
+module github.com/bdun1013/helm-snapshot
 
 go 1.15
 

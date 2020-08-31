@@ -1,8 +1,8 @@
 package suite
 
 import (
-	"github.com/bpdunni/helm-snapshot/pkg/assertion"
-	"github.com/bpdunni/helm-snapshot/pkg/printer"
+	"github.com/bdun1013/helm-snapshot/pkg/assertion"
+	"github.com/bdun1013/helm-snapshot/pkg/printer"
 )
 
 // TestJobResult result return by TestJob.Run

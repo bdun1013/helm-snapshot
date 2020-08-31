@@ -5,8 +5,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/bpdunni/helm-snapshot/pkg/printer"
-	"github.com/bpdunni/helm-snapshot/pkg/snapshot"
+	"github.com/bdun1013/helm-snapshot/pkg/printer"
+	"github.com/bdun1013/helm-snapshot/pkg/snapshot"
 )
 
 // TestSuiteResult result return by TestSuite.Run

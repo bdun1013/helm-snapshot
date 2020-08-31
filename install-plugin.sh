@@ -12,11 +12,11 @@ echo "Downloading and installing helm-snapshot v${version} ..."
 
 url=""
 if [ "$(uname)" = "Darwin" ]; then
-    url="https://github.com/bpdunni/helm-snapshot/releases/download/v${version}/helm-snapshot_${version}_darwin_amd64.tar.gz"
+    url="https://github.com/bdun1013/helm-snapshot/releases/download/v${version}/helm-snapshot_${version}_darwin_amd64.tar.gz"
 elif [ "$(uname)" = "Linux" ] ; then
-    url="https://github.com/bpdunni/helm-snapshot/releases/download/v${version}/helm-snapshot_${version}_linux_amd64.tar.gz"
+    url="https://github.com/bdun1013/helm-snapshot/releases/download/v${version}/helm-snapshot_${version}_linux_amd64.tar.gz"
 else
-    url="https://github.com/bpdunni/helm-snapshot/releases/download/v${version}/helm-snapshot_${version}_windows_amd64.tar.gz"
+    url="https://github.com/bdun1013/helm-snapshot/releases/download/v${version}/helm-snapshot_${version}_windows_amd64.tar.gz"
 fi
 
 echo $url

@@ -6,7 +6,7 @@ import (
 	"io"
 	"strconv"
 
-	"github.com/bpdunni/helm-snapshot/pkg/common"
+	"github.com/bdun1013/helm-snapshot/pkg/common"
 )
 
 // GetValueOfSetPath get the value of the `--set` format path from a manifest

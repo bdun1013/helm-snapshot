@@ -1,6 +1,6 @@
 package validators
 
-import "github.com/bpdunni/helm-snapshot/pkg/common"
+import "github.com/bdun1013/helm-snapshot/pkg/common"
 
 // IsKindValidator validate kind of manifest is Of
 type IsKindValidator struct {

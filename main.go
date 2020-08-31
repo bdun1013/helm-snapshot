@@ -7,8 +7,8 @@ import (
 	"path/filepath"
 	"runtime"
 
-	"github.com/bpdunni/helm-snapshot/pkg/printer"
-	"github.com/bpdunni/helm-snapshot/pkg/runner"
+	"github.com/bdun1013/helm-snapshot/pkg/printer"
+	"github.com/bdun1013/helm-snapshot/pkg/runner"
 	"github.com/spf13/cobra"
 )
 
@@ -51,7 +51,7 @@ Or specify the suite files glob path pattern:
 
 $ helm snapshot -f 'my-tests/*.yaml' my-chart
 
-Check https://github.com/bpdunni/helm-snapshot for more
+Check https://github.com/bdun1013/helm-snapshot for more
 details about how to write tests.
 `,
 	Args: cobra.MinimumNArgs(1),

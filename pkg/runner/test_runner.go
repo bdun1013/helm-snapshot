@@ -5,9 +5,9 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/bpdunni/helm-snapshot/pkg/printer"
-	"github.com/bpdunni/helm-snapshot/pkg/snapshot"
-	"github.com/bpdunni/helm-snapshot/pkg/suite"
+	"github.com/bdun1013/helm-snapshot/pkg/printer"
+	"github.com/bdun1013/helm-snapshot/pkg/snapshot"
+	"github.com/bdun1013/helm-snapshot/pkg/suite"
 	"helm.sh/helm/v3/pkg/chart"
 	"helm.sh/helm/v3/pkg/chart/loader"
 )

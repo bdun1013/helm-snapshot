@@ -1,8 +1,8 @@
 package validators
 
 import (
-	"github.com/bpdunni/helm-snapshot/pkg/common"
-	"github.com/bpdunni/helm-snapshot/pkg/valueutils"
+	"github.com/bdun1013/helm-snapshot/pkg/common"
+	"github.com/bdun1013/helm-snapshot/pkg/valueutils"
 )
 
 // IsNullValidator validate value of Path id kind

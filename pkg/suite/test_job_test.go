@@ -5,8 +5,8 @@ import (
 	"io/ioutil"
 	"testing"
 
-	"github.com/bpdunni/helm-snapshot/pkg/assertion"
-	"github.com/bpdunni/helm-snapshot/pkg/snapshot"
+	"github.com/bdun1013/helm-snapshot/pkg/assertion"
+	"github.com/bdun1013/helm-snapshot/pkg/snapshot"
 	"github.com/bradleyjkemp/cupaloy/v2"
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/yaml.v2"

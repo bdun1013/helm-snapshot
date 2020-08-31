@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/bpdunni/helm-snapshot/pkg/common"
-	"github.com/bpdunni/helm-snapshot/pkg/valueutils"
+	"github.com/bdun1013/helm-snapshot/pkg/common"
+	"github.com/bdun1013/helm-snapshot/pkg/valueutils"
 	yaml "gopkg.in/yaml.v2"
 )
 

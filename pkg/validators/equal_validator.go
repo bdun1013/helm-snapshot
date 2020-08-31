@@ -3,8 +3,8 @@ package validators
 import (
 	"reflect"
 
-	"github.com/bpdunni/helm-snapshot/pkg/common"
-	"github.com/bpdunni/helm-snapshot/pkg/valueutils"
+	"github.com/bdun1013/helm-snapshot/pkg/common"
+	"github.com/bdun1013/helm-snapshot/pkg/valueutils"
 )
 
 // EqualValidator validate whether the value of Path equal to Value

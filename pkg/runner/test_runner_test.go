@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/bpdunni/helm-snapshot/pkg/printer"
+	"github.com/bdun1013/helm-snapshot/pkg/printer"
 	"github.com/bradleyjkemp/cupaloy/v2"
 	"github.com/stretchr/testify/assert"
 )

@@ -27,7 +27,7 @@ If you are ready for writing tests, check the [DOCUMENT](./DOCUMENT.md) for the 
 ## Install
 
 ```
-$ helm plugin install https://github.com/bpdunni/helm-snapshot
+$ helm plugin install https://github.com/bdun1013/helm-snapshot
 ```
 
 It will install the latest version of binary into helm plugin directory.

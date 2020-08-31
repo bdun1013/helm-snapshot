@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/bpdunni/helm-snapshot/pkg/snapshot"
+	"github.com/bdun1013/helm-snapshot/pkg/snapshot"
 	"gopkg.in/yaml.v2"
 	"helm.sh/helm/v3/pkg/chart"
 )

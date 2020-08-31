@@ -1,7 +1,7 @@
 package validators
 
 import (
-	"github.com/bpdunni/helm-snapshot/pkg/common"
+	"github.com/bdun1013/helm-snapshot/pkg/common"
 	yaml "gopkg.in/yaml.v2"
 )
 

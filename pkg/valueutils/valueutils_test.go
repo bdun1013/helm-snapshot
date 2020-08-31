@@ -3,7 +3,7 @@ package valueutils
 import (
 	"testing"
 
-	"github.com/bpdunni/helm-snapshot/pkg/common"
+	"github.com/bdun1013/helm-snapshot/pkg/common"
 	"github.com/stretchr/testify/assert"
 )
 

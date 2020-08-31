@@ -3,8 +3,8 @@ package validators
 import (
 	"strconv"
 
-	"github.com/bpdunni/helm-snapshot/pkg/snapshot"
-	"github.com/bpdunni/helm-snapshot/pkg/valueutils"
+	"github.com/bdun1013/helm-snapshot/pkg/snapshot"
+	"github.com/bdun1013/helm-snapshot/pkg/valueutils"
 )
 
 // MatchSnapshotValidator validate snapshot of value of Path the same as cached
